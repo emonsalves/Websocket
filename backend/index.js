@@ -14,6 +14,14 @@ const io = new SocketServer(httpServer)
 
 io.on('connection', (socket) => {
   console.log(`New client connected ${socket.id}`)
+
+  socket.on('message', (body) => {
+    console.log(body)
+    socket.broadcast.emit('message', {
+      body,
+      from: socket.id.slice(6)
+    })
+  })
 })
 
 httpServer.listen(3000, () => console.log('Server is running'))
